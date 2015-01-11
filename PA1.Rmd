@@ -1,0 +1,48 @@
+---
+title: "PA1"
+author: "Matteo"
+date: "Friday, January 09, 2015"
+output: html_document
+---
+
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Loading and preprocessing the data
+
+``` {r, echo = TRUE}
+setwd("C:\\Users\\Automation\\Documents\\R\\RepData_PeerAssessment1")
+unzip("activity.zip")
+data <- read.csv("activity.csv")
+dataStep <- read.csv("activity.csv")
+
+aggSum <- aggregate(steps ~ date, data = dataStep, FUN = sum)
+hist(aggSum$step, 53, main = "Steps per day", xlim = c(0,25000))
+```
+
+
+## What is mean total number of steps taken per day?
+``` {r, echo=TRUE}
+meanStep <- mean(aggSum$step)
+medianStep <- median(aggSum$step)
+```
+``` {r, echo=TRUE}
+meanStep
+medianStep
+```
+
+
+## What is the average daily activity pattern?
+
+
+
+## Imputing missing values
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
