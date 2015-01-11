@@ -18,11 +18,12 @@ output:
 ``` {r, echo = TRUE}
 setwd("C:\\Users\\Automation\\Documents\\R\\RepData_PeerAssessment1")
 unzip("activity.zip")
-data <- read.csv("activity.csv")
 dataStep <- read.csv("activity.csv")
 
 aggSum <- aggregate(steps ~ date, data = dataStep, FUN = sum)
 hist(aggSum$step, 53, main = "Steps per day", xlim = c(0,25000))
+mean(aggSum$steps)
+
 ```
 
 
@@ -30,19 +31,70 @@ hist(aggSum$step, 53, main = "Steps per day", xlim = c(0,25000))
 ``` {r, echo=TRUE}
 meanStep <- mean(aggSum$step)
 medianStep <- median(aggSum$step)
-```
-``` {r, echo=TRUE}
+
 meanStep
 medianStep
 ```
 
 
 ## What is the average daily activity pattern?
-
-
+``` {r, echo=TRUE}
+avgStp <- aggregate(steps ~ interval, data = dataStep, FUN = mean)
+plot(avgStp$interval, avgStp$steps, type = "l")
+maxStp <- avgStp[max(avgStp$steps),1]
+maxStp
+```
 
 ## Imputing missing values
+1. Calculate and report the total number of missing values in the dataset
+(i.e. the total number of rows with NAs)
+``` {r, echo=TRUE}
+sum(is.na(dataStep))
+
+```
+
+2. Devise a strategy for filling in all of the missing values in the dataset. The
+strategy does not need to be sophisticated. For example, you could use
+the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 
+3. Create a new dataset that is equal to the original dataset but with the
+missing data filled in.
+``` {r, echo=TRUE}
+dataNoNa <- dataStep
+for (i in 1:dim(dataNoNa[1])) {
+        if (is.na(dataNoNa[i,1] == TRUE)) {
+                dataNoNa[i,1] <- avgStp[avgStp$interval == dataNoNa[i,3],2]
+                }
+}
+avgNoNa <- aggregate(steps ~ interval, data = dataNoNa, FUN = mean)
+```
+
+4. Make a histogram of the total number of steps taken each day and Calculate
+and report the mean and median total number of steps taken per day. Do
+these values differ from the estimates from the first part of the assignment?
+What is the impact of imputing missing data on the estimates of the total
+daily number of steps?
+```{r, echo=TRUE}
+plot(avgNoNa$interval, avgNoNa$steps, type = "l")
+aggNoNa <- aggregate(steps ~ date, data = dataNoNa, FUN = sum)
+hist(aggNoNa$step, 53, main = "Steps per day no Na", xlim = c(0,25000))
+
+stepsDayNoNa <- aggregate(steps ~ date, data = dataNoNa, FUN = sum)
+meanNoNa <- mean(stepsDayNoNa$step)
+medianNoNa <- median(stepsDayNoNa$step)
+meanNoNa
+medianNoNa
+
+```
+
+
+Since I decided to use the average amount of step per interval to substitue NA 
+values, the average doesn't change due to the very definition of mean. The 
+median however increases slightly to match the average.  
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r, echo=TRUE}
+dataNoNa$weekday <- as.factor(weekdays(as.Date(dataNoNa$date)))
+head(dataNoNa)
+```
