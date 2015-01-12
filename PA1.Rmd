@@ -96,5 +96,7 @@ median however increases slightly to match the average.
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r, echo=TRUE}
 dataNoNa$weekday <- as.factor(weekdays(as.Date(dataNoNa$date)))
-head(dataNoNa)
+dataNoNa$weekday <- dataNoNa[,dataNoNa$weekday="Monday|Tuesday|Wednesday|Thursday|Friday"] == "Weekday"
+
+
 ```
