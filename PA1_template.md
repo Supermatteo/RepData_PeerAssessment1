@@ -92,6 +92,9 @@ sum(is.na(dataStep))
 strategy does not need to be sophisticated. For example, you could use
 the mean/median for that day, or the mean for that 5-minute interval, etc.
 
+I decided to replace the missing values with the average values of the interval
+missing. This strategy stabilizes the mean and makes the median also closer
+to the mean.
 
 3. Create a new dataset that is equal to the original dataset but with the
 missing data filled in.

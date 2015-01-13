@@ -97,8 +97,11 @@ maxStp</code></pre>
 <pre class="r"><code>sum(is.na(dataStep))</code></pre>
 <pre><code>## [1] 2304</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.</p></li>
-<li><p>Create a new dataset that is equal to the original dataset but with the missing data filled in.</p></li>
+<li>Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.</li>
+</ol>
+<p>I decided to replace the missing values with the average values of the interval missing. This strategy stabilizes the mean and makes the median also closer to the mean.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Create a new dataset that is equal to the original dataset but with the missing data filled in.</li>
 </ol>
 <pre class="r"><code>dataNoNa &lt;- dataStep
 for (i in 1:dim(dataNoNa[1])) {
